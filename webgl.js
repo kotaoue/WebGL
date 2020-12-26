@@ -75,6 +75,8 @@ function initShaderProgram(gl, vsSource, fsSource) {
   gl.attachShader(shaderProgram, vertexShader);
   gl.attachShader(shaderProgram, fragmentShader);
   gl.linkProgram(shaderProgram);
+  vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+  gl.enableVertexAttribArray(vertexColorAttribute);
 
   // If creating the shader program failed, alert
 
@@ -208,14 +210,8 @@ function drawScene(gl, programInfo, buffers) {
     const stride = 0;         // how many bytes to get from one set of values to the next
     // 0 = use type and numComponents above
     const offset = 0;         // how many bytes inside the buffer to start from
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-    gl.vertexAttribPointer(
-      programInfo.attribLocations.vertexPosition,
-      numComponents,
-      type,
-      normalize,
-      stride,
-      offset);
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesColorBuffer);
+    gl.vertexAttribPointer(vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(
       programInfo.attribLocations.vertexPosition);
   }
